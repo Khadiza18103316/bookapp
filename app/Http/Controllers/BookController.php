@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Http\Requests\BookStoreRequest;
 class BookController extends Controller
 {
     public function index()
     {
-        return "list of index page";
+        $books = Book::get();
+        return view('book.index',compact('books'));
     }
     public function create()
     {
         return view ('book.create');
     }
-    public function store(Request $request)
+    public function store(BookStoreRequest $request)
     {
         Book::create([
             'name'=>$request->name,
@@ -22,6 +24,21 @@ class BookController extends Controller
             'category'=>$request->category,
 
         ]);
-        return back();
+        return back()->with('message','New book added');
     }
+    public function edit($id){
+        $book = Book::find($id);
+        return view('book.edit',compact('book'));
+    }
+    public function update(Request $request,$id){
+        
+        $book = Book::find($id);
+        $book->name = $request->name;
+        $book->description = $request->description;
+        $book->category = $request->category;
+        $book->save();
+        return redirect()->route('book.index')->with('message',' book Updated');
+
+}
+
 }

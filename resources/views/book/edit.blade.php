@@ -18,29 +18,29 @@
     </div>
     @endif
 <div class="card mt-5">
-<div class="card-header">Create a new book</div>
+<div class="card-header">Update a Book</div>
 <div class="card-body">
-<form action="{{route('book.store')}}" method="POST">@csrf
+<form action="{{route('book.update',$book->id)}}" method="POST">@csrf
 
     <label>Name of book</label>
-    <input type="text" name="name" class="form-control" placeholder="name of book">
+    <input type="text" name="name" class="form-control" value="{{$book->name}}">
     @if($errors->has('name'))
         <span class="text-danger">{{$errors->first('name')}}</span> 
     @endif
     <br>
     <label>Description of book</label>
-    <textarea name="description" class="form-control"></textarea>
+    <textarea name="description" class="form-control" value="{{$book->description }}"></textarea>
     @if($errors->has('description'))
         <span class="text-danger">{{$errors->first('description')}}</span> 
     @endif
     <br>
     <label>Category</label>
-    <select name="category"class="form-control" >
+    <select name="category"class="form-control" value="{{$book->category }}">
         <option value="">select</option>
-        <option value="frictional">Frictional Book</option>
-        <option value="biography">Biography Book</option>
-        <option value="comdey">Comdey Book</option>
-        <option value="eductional">Eductional</option>
+        <option value="frictional" @if($book->category== 'frictional')selected @endif>Frictional Book</option>
+        <option value="biography" @if($book->category== 'biography')selected @endif>Biography Book</option>
+        <option value="comdey" @if($book->category== 'comdey')selected @endif>Comdey Book</option>
+        <option value="eductional" @if($book->category== 'eductional')selected @endif>Eductional</option>
     </select>
     @if($errors->has('category'))
         <span class="text-danger">{{$errors->first('category')}}</span> 
