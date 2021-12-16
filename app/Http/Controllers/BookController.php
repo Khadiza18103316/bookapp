@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Http\Requests\BookStoreRequest;
+use App\Http\Requests\UpdateFormRequest;
 class BookController extends Controller
 {
     public function index()
@@ -18,10 +19,13 @@ class BookController extends Controller
     }
     public function store(BookStoreRequest $request)
     {
+        $image = $request->file('image')->store('public/product');
+
         Book::create([
             'name'=>$request->name,
             'description'=>$request->description,
             'category'=>$request->category,
+            'image'=>$image
 
         ]);
         return back()->with('message','New book added');
@@ -30,15 +34,30 @@ class BookController extends Controller
         $book = Book::find($id);
         return view('book.edit',compact('book'));
     }
-    public function update(Request $request,$id){
+    public function update(UpdateFormRequest $request,$id){
         
         $book = Book::find($id);
-        $book->name = $request->name;
-        $book->description = $request->description;
-        $book->category = $request->category;
-        $book->save();
+        if($request->hasFile('image'))
+        {
+            $image = $request->file('image')->store('public/product');
+            $book->name = $request->name;
+            $book->description = $request->description;
+            $book->category = $request->category;
+            $book->image = $image;
+            $book->save();
+        }else{
+            $book->name = $request->name;
+            $book->description = $request->description;
+            $book->category = $request->category;
+            $book->save();
+        }
+        
         return redirect()->route('book.index')->with('message',' book Updated');
-
+}
+public function destroy($id){
+    $book = Book::find($id);
+    $book->delete();
+    return redirect()->route('book.index')->with('message',' book deleted'); 
 }
 
 }

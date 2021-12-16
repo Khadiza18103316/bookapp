@@ -20,7 +20,7 @@
 <div class="card mt-5">
 <div class="card-header">Update a Book</div>
 <div class="card-body">
-<form action="{{route('book.update',$book->id)}}" method="POST">@csrf
+<form action="{{route('book.update',$book->id)}}" method="POST" enctype="multipart/form-data">@csrf
 
     <label>Name of book</label>
     <input type="text" name="name" class="form-control" value="{{$book->name}}">
@@ -46,6 +46,13 @@
         <span class="text-danger">{{$errors->first('category')}}</span> 
     @endif
     <br>
+    <label>Image of book</label>
+    <input type="file" name="image" class="from-control">
+    @if($errors->has('image'))
+        <span class="text-danger">{{$errors->first('image')}}</span> 
+    @endif
+    <br>
+    
     <input type="submit" value="submit" class="btn btn-primary">
 </form>
 </div>

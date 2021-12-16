@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <div class="row justify-content-center">
-        <div class="col-md-9">
+        <div class="col-md-12">
             @if(Session::has('message'))
     <div class="alert alert-success">
         {{Session::get('message')}}
@@ -22,6 +22,8 @@
     <table class="table">
         <thead>
           <tr>
+            <th scope="col">#</th> 
+            <th scope="col">Image</th>
             <th scope="col">Name</th>
             <th scope="col">Description</th>
             <th scope="col">Category</th>
@@ -31,16 +33,25 @@
           </tr>
         </thead>
         <tbody>
-            @forelse($books as $book)
+            @forelse($books as $key => $book)
             <tr>
-
-                <td>{{$book->name}}</td>
+                <th scope="row">{{ $key + 1 }}</th>
+                <td>
+                    <img src="{{ Storage::url($book->image) }}" width="100">
+                </td>
+                <td>{{$book->name}}</td>             
                 <td>{{$book->description}}</td>
                 <td>{{$book->category}}</td>
                 <td>
                     <a href="{{route('book.edit',[$book->id])}}">
                         <button class="btn btn-info">Edit</button>
                     </a>
+                </td>
+
+                <td>
+                    <form action="{{route('book.destroy',$book->id)}}" method="POST">@csrf
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
                 </td>
               </tr> 
               @empty

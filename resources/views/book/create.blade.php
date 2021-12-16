@@ -20,7 +20,7 @@
 <div class="card mt-5">
 <div class="card-header">Create a new book</div>
 <div class="card-body">
-<form action="{{route('book.store')}}" method="POST">@csrf
+<form action="{{route('book.store')}}" method="POST" enctype="multipart/form-data">@csrf
 
     <label>Name of book</label>
     <input type="text" name="name" class="form-control" placeholder="name of book">
@@ -45,6 +45,13 @@
     @if($errors->has('category'))
         <span class="text-danger">{{$errors->first('category')}}</span> 
     @endif
+    <label>Image of book</label>
+    <input type="file" name="image" class="from-control">
+    @if($errors->has('image'))
+        <span class="text-danger">{{$errors->first('image')}}</span> 
+    @endif
+    <br>
+
     <br>
     <input type="submit" value="submit" class="btn btn-primary">
 </form>
